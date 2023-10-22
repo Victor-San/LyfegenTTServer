@@ -40,5 +40,6 @@ module.exports = gql`
     type Mutation {
         createProduct(productInput: ProductInput): Product!
         deleteProduct(productInput: ProductInput): Boolean
+        createPatient(patientInput: PatientInput): Patient!
     }
 `

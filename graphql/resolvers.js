@@ -29,6 +29,22 @@ module.exports = {
                 ...res._doc     // _doc is the properties of the mongoose model
             }
         },
+        async createPatient(_, {patientInput: {diseaseStatus, product, treatmentStart, os, pfs}}) {
+
+            const createdPatient = new Patient({
+                diseaseStatus: diseaseStatus,
+                product: product,
+                treatmentStart: treatmentStart,
+                os: os,
+                pfs: pfs
+            })
+
+            const res = await createdPatient.save();
+            return {
+                id: res.id,
+                ...res._doc
+            }
+        },
         async deleteProduct(_, { productInput: {brand, solution, packSize, price} }) {
             const wasDeleted = (await Product.deleteOne({ brand: brand, solution: solution, packSize: packSize, price: price })).deletedCount    // _id is the mongodb provided id
 
