@@ -16,7 +16,6 @@ module.exports = {
             })
 
             const res = await createdProduct.save(); // MongoDB Saving
-            console.log(res)
             return {
                 id: res.id,
                 ...res._doc     // _doc is the properties of the mongoose model
