@@ -17,6 +17,7 @@ module.exports = gql`
 
     type Query {
         product(ID: ID!): Product!
+        allProducts: [Product!]!
     }
 
     type Mutation {

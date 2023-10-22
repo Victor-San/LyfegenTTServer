@@ -4,6 +4,9 @@ module.exports = {
     Query: {
         async product(_, { ID }) {
             return await Product.findById(ID)
+        },
+        async allProducts(_) {
+            return await Product.find()
         }
     },
     Mutation: {
