@@ -2,10 +2,18 @@ const { gql } = require('apollo-server')
 
 module.exports = gql`
     type Product {
-        brand: String
-        solution: String
-        packSize: Int
-        price: Float
+        brand: String!
+        solution: String!
+        packSize: Int!
+        price: Float!
+    }
+
+    type Patient {
+        diseaseStatus: String!
+        product: Product!
+        treatmentStart: String!
+        os: Boolean!
+        pfs: Boolean!
     }
 
     input ProductInput {
@@ -15,9 +23,18 @@ module.exports = gql`
         price: Float!
     }
 
+    input PatientInput {
+        diseaseStatus: String!
+        product: ProductInput!
+        treatmentStart: String!
+        os: Boolean!
+        pfs: Boolean!
+    }
+
     type Query {
         product(ID: ID!): Product!
-        allProducts: [Product!]!
+        allProducts: [Product]!
+        allPatients: [Patient]!
     }
 
     type Mutation {
