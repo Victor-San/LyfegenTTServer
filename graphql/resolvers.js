@@ -46,9 +46,24 @@ module.exports = {
             }
         },
         async deleteProduct(_, { productInput: {brand, solution, packSize, price} }) {
-            const wasDeleted = (await Product.deleteOne({ brand: brand, solution: solution, packSize: packSize, price: price })).deletedCount    // _id is the mongodb provided id
+            const wasDeleted = (await Product.deleteOne({ brand: brand, solution: solution, packSize: packSize, price: price })).deletedCount // _id is the mongodb provided id
 
-            return wasDeleted;      // 1 if something was deleted, 0 if not
+            return wasDeleted; // 1 if something was deleted, 0 if not
+        },
+        async deletePatient(_, { patientInput: {diseaseStatus, product, treatmentStart, os, pfs} }) {
+            const wasDeleted = (await Patient.deleteOne({ 
+                diseaseStatus: diseaseStatus, product: {
+                    brand: product.brand,
+                    solution: product.solution,
+                    packSize: product.packSize,
+                    price: product.price
+                },
+                treatmentStart: treatmentStart,
+                os: os,
+                pfs: pfs
+            })).deletedCount
+
+            return wasDeleted;
         }
     }
 }
