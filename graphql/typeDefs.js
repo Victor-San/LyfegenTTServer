@@ -9,11 +9,13 @@ module.exports = gql`
     }
 
     type Patient {
-        diseaseStatus: String!
+        insuranceCompany: String!
+        cancerStage: Int!
+        age: Int!
         product: Product!
         treatmentStart: String!
-        os: Boolean!
-        pfs: Boolean!
+        os: String
+        pfs: String
     }
 
     input ProductInput {
@@ -24,15 +26,16 @@ module.exports = gql`
     }
 
     input PatientInput {
-        diseaseStatus: String!
+        insuranceCompany: String!
+        cancerStage: Int!
+        age: Int!
         product: ProductInput!
         treatmentStart: String!
-        os: Boolean!
-        pfs: Boolean!
+        os: String
+        pfs: String
     }
 
     type Query {
-        product(ID: ID!): Product!
         allProducts: [Product]!
         allPatients: [Patient]!
     }

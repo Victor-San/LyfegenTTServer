@@ -1,11 +1,13 @@
 const { model, Schema } = require('mongoose')
 
 const patientSchema = new Schema({
-    diseaseStatus: String,
+    insuranceCompany: String,
+    cancerStage: String,
+    age: Number,
     product: {},
     treatmentStart: String,
-    os: Boolean,
-    pfs: Boolean
+    os: String,
+    pfs: String
 })
 
 module.exports = model('Patient', patientSchema)

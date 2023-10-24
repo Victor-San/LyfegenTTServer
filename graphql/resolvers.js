@@ -3,9 +3,6 @@ const Patient = require('../models/Patient')
 
 module.exports = {
     Query: {
-        async product(_, { ID }) {
-            return await Product.findById(ID)
-        },
         async allProducts(_) {
             return await Product.find()
         },
@@ -29,10 +26,12 @@ module.exports = {
                 ...res._doc     // _doc is the properties of the mongoose model
             }
         },
-        async createPatient(_, {patientInput: {diseaseStatus, product, treatmentStart, os, pfs}}) {
+        async createPatient(_, {patientInput: {insuranceCompany, cancerStage, age, product, treatmentStart, os, pfs}}) {
 
             const createdPatient = new Patient({
-                diseaseStatus: diseaseStatus,
+                insuranceCompany: insuranceCompany,
+                cancerStage: cancerStage,
+                age: age,
                 product: product,
                 treatmentStart: treatmentStart,
                 os: os,
@@ -50,14 +49,12 @@ module.exports = {
 
             return wasDeleted; // 1 if something was deleted, 0 if not
         },
-        async deletePatient(_, { patientInput: {diseaseStatus, product, treatmentStart, os, pfs} }) {
+        async deletePatient(_, { patientInput: {insuranceCompany, cancerStage, age, product, treatmentStart, os, pfs} }) {
             const wasDeleted = (await Patient.deleteOne({ 
-                diseaseStatus: diseaseStatus, product: {
-                    brand: product.brand,
-                    solution: product.solution,
-                    packSize: product.packSize,
-                    price: product.price
-                },
+                insuranceCompany: insuranceCompany,
+                cancerStage: cancerStage,
+                age: age, 
+                product: product,
                 treatmentStart: treatmentStart,
                 os: os,
                 pfs: pfs
