@@ -18,6 +18,17 @@ module.exports = gql`
         pfs: String
     }
 
+    type Contract {
+        insuranceCompany: String!
+        product: Product!
+        ppp1: Float!
+        ppp2: Float!
+        ppp3: Float!
+        ppp4: Float!
+        duration: String!
+        enrolled: [Patient]!
+    }
+
     input ProductInput {
         brand: String!
         solution: String!
@@ -35,9 +46,21 @@ module.exports = gql`
         pfs: String
     }
 
+    input ContractInput {
+        insuranceCompany: String!
+        product: ProductInput!
+        ppp1: Float!
+        ppp2: Float!
+        ppp3: Float!
+        ppp4: Float!
+        duration: String!
+        enrolled: [PatientInput]
+    }
+
     type Query {
         allProducts: [Product]!
         allPatients: [Patient]!
+        allContracts: [Contract]!
     }
 
     type Mutation {

@@ -1,5 +1,6 @@
 const Product = require('../models/Product')
 const Patient = require('../models/Patient')
+const Contract = require('../models/Contract')
 
 module.exports = {
     Query: {
@@ -8,6 +9,9 @@ module.exports = {
         },
         async allPatients(_) {
             return await Patient.find()
+        },
+        async allContracts(_) {
+            return await Contract.find()
         }
     },
     Mutation: {
