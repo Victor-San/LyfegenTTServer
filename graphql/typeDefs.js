@@ -2,6 +2,7 @@ const { gql } = require('apollo-server')
 
 module.exports = gql`
     type Product {
+        _id: ID!
         brand: String!
         solution: String!
         packSize: Int!
@@ -9,6 +10,7 @@ module.exports = gql`
     }
 
     type Patient {
+        _id: ID!
         insuranceCompany: String!
         cancerStage: Int!
         age: Int!
@@ -19,6 +21,7 @@ module.exports = gql`
     }
 
     type Contract {
+        _id: ID!
         insuranceCompany: String!
         product: Product!
         ppp1: Float!
@@ -54,13 +57,13 @@ module.exports = gql`
         ppp3: Float!
         ppp4: Float!
         duration: String!
-        enrolled: [PatientInput]
     }
 
     type Query {
         allProducts: [Product]!
         allPatients: [Patient]!
         allContracts: [Contract]!
+        getContractID(ContractInput: ContractInput!): [ID]
     }
 
     type Mutation {
@@ -69,5 +72,8 @@ module.exports = gql`
 
         createPatient(patientInput: PatientInput): Patient!
         deletePatient(patientInput: PatientInput): Boolean
+
+        createContract(contractInput: ContractInput): Contract!
+        deleteContract(ID: ID!): Boolean
     }
 `
