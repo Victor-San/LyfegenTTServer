@@ -63,7 +63,6 @@ module.exports = gql`
         allProducts: [Product]!
         allPatients: [Patient]!
         allContracts: [Contract]!
-        getContractID(ContractInput: ContractInput!): [ID]
     }
 
     type Mutation {
