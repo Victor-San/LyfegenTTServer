@@ -57,16 +57,17 @@ module.exports = {
                 os: os,
                 pfs: pfs
             }
+            const createdPatient = new Patient(patientObject)
+            
+            const res = await createdPatient.save();
+
             if (age<55 && cancerStage<4) {
                 const enrolledContracts = await Contract.find({ insuranceCompany: insuranceCompany, product: product })
                 enrolledContracts.map((x) => {
-                    x.enrolled = [...x.enrolled, patientObject]
+                    x.enrolled = [...x.enrolled, {_id: res.id, ...patientObject}]
                     x.save()
                 })
             }
-            const createdPatient = new Patient(patientObject)
-
-            const res = await createdPatient.save();
             return {
                 id: res.id,
                 ...res._doc
