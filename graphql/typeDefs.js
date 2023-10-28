@@ -16,8 +16,8 @@ module.exports = gql`
         age: Int!
         product: Product!
         treatmentStart: String!
-        os: String
-        pfs: String
+        death: String
+        progression: String
     }
 
     type Contract {
@@ -30,6 +30,8 @@ module.exports = gql`
         ppp4: Float!
         duration: String!
         enrolled: [Patient]!
+        payable: Float!
+        refundable: Float!
     }
 
     input ProductInput {
@@ -45,8 +47,8 @@ module.exports = gql`
         age: Int!
         product: ProductInput!
         treatmentStart: String!
-        os: String
-        pfs: String
+        death: String
+        progression: String
     }
 
     input ContractInput {
@@ -63,6 +65,7 @@ module.exports = gql`
         allProducts: [Product]!
         allPatients: [Patient]!
         allContracts: [Contract]!
+        getContractStatus: [Contract]!
     }
 
     type Mutation {

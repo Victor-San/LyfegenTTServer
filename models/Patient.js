@@ -6,8 +6,8 @@ const patientSchema = new Schema({
     age: Number,
     product: {},
     treatmentStart: String,
-    os: String,
-    pfs: String
+    death: String,
+    progression: String
 })
 
 module.exports = model('Patient', patientSchema)

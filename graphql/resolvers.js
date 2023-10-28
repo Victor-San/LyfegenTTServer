@@ -29,6 +29,9 @@ module.exports = {
         },
         async allContracts(_) {
             return await Contract.find()
+        },
+        async getContractStatus(_) {
+            const contracts = await Contract.find()
         }
     },
     Mutation: {
@@ -47,15 +50,15 @@ module.exports = {
                 ...res._doc     // _doc is the properties of the mongoose model
             }
         },
-        async createPatient(_, {patientInput: {insuranceCompany, cancerStage, age, product, treatmentStart, os, pfs}}) {
+        async createPatient(_, {patientInput: {insuranceCompany, cancerStage, age, product, treatmentStart, death, progression}}) {
             const patientObject = {
                 insuranceCompany: insuranceCompany,
                 cancerStage: cancerStage,
                 age: age,
                 product: product,
                 treatmentStart: treatmentStart,
-                os: os,
-                pfs: pfs
+                death: death,
+                progression: progression
             }
             const createdPatient = new Patient(patientObject)
             
@@ -100,15 +103,15 @@ module.exports = {
 
             return wasDeleted; // 1 if something was deleted, 0 if not
         },
-        async deletePatient(_, { patientInput: {insuranceCompany, cancerStage, age, product, treatmentStart, os, pfs} }) {
+        async deletePatient(_, { patientInput: {insuranceCompany, cancerStage, age, product, treatmentStart, death, progression} }) {
             const patientObject = { 
                 insuranceCompany: insuranceCompany,
                 cancerStage: cancerStage,
                 age: age, 
                 product: product,
                 treatmentStart: treatmentStart,
-                os: os,
-                pfs: pfs
+                death: death,
+                progression: progression
             }
             if (age<55 && cancerStage<4) {
                 const enrolledContracts = await Contract.find({ insuranceCompany: insuranceCompany, product: product })
