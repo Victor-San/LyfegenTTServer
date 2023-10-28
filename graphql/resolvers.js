@@ -2,6 +2,8 @@ const Product = require('../models/Product')
 const Patient = require('../models/Patient')
 const Contract = require('../models/Contract')
 
+const dayjs = require('dayjs')
+
 function shallowEqual(object1, object2) {
     const keys1 = Object.keys(object1);
     const keys2 = Object.keys(object2);
@@ -32,6 +34,61 @@ module.exports = {
         },
         async getContractStatus(_) {
             const contracts = await Contract.find()
+            const contractStatuses = []
+            contracts.forEach((contract) => {
+                const c = {
+                    _id: contract._id,
+                    insuranceCompany: contract.insuranceCompany,
+                    product: contract.product,
+                    ppp1: contract.ppp1,
+                    ppp2: contract.ppp2,
+                    ppp3: contract.ppp3,
+                    ppp4: contract.ppp4,
+                    duration: contract.duration,
+                    enrolled: contract.enrolled,
+                    payable: 0,
+                    refundable: 0
+                }
+                contract.enrolled.forEach((patient) => {
+                    const treatmentStartDate = dayjs(patient.treatmentStart)
+                    const progressionDate = patient.progression ? dayjs(patient.progression) : treatmentStartDate.add(24, 'month')
+                    const deathDate = patient.death ? dayjs(patient.death) : treatmentStartDate.add(24, 'month')
+                    if (treatmentStartDate.isBefore(deathDate)) {
+                        if (!patient.death && !patient.progression) {
+                            console.log('ppp3')
+                            c.payable += patient.product.price * contract.ppp3
+                            c.refundable += patient.product.price * (1 - contract.ppp3)
+                        }
+                        else if (
+                            treatmentStartDate.isBefore(progressionDate) &&
+                            ((patient.death && treatmentStartDate.diff(deathDate, 'month') < 9) ||
+                            (patient.progression && treatmentStartDate.diff(progressionDate, 'month') < 9))
+                        ) {
+                            console.log('ppp4')
+                            c.payable += patient.product.price * contract.ppp4
+                            c.refundable += patient.product.price * (1 - contract.ppp4)
+                        }
+                        else if (
+                            treatmentStartDate.diff(deathDate, 'month') < 12
+                        ) {
+                            console.log('ppp2')
+                            c.payable += patient.product.price * contract.ppp2
+                            c.refundable += patient.product.price * (1 - contract.ppp2)
+                        }
+                        else if (treatmentStartDate.diff(progressionDate) > 9 && treatmentStartDate.diff(progressionDate) < 12) {
+                            console.log('ppp1')
+                            c.payable += patient.product.price * contract.ppp1
+                            c.refundable += patient.product.price * (1 - contract.ppp1)
+                        }
+                        else {
+                            console.log('else')
+                            c.payable += patient.product.price
+                        }
+                    }
+                })
+                contractStatuses.push(c)
+            })
+            return contractStatuses
         }
     },
     Mutation: {
