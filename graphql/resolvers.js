@@ -50,35 +50,36 @@ module.exports = {
                     refundable: 0
                 }
                 contract.enrolled.forEach((patient) => {
+                    console.log('patient')
                     const treatmentStartDate = dayjs(patient.treatmentStart)
                     const progressionDate = patient.progression ? dayjs(patient.progression) : treatmentStartDate.add(24, 'month')
                     const deathDate = patient.death ? dayjs(patient.death) : treatmentStartDate.add(24, 'month')
                     if (treatmentStartDate.isBefore(deathDate)) {
                         if (!patient.death && !patient.progression) {
                             console.log('ppp3')
-                            c.payable += patient.product.price * contract.ppp3
-                            c.refundable += patient.product.price * (1 - contract.ppp3)
+                            c.payable += patient.product.price * (1 - contract.ppp3)
+                            c.refundable += patient.product.price * contract.ppp3
                         }
                         else if (
                             treatmentStartDate.isBefore(progressionDate) &&
-                            ((patient.death && treatmentStartDate.diff(deathDate, 'month') < 9) ||
-                            (patient.progression && treatmentStartDate.diff(progressionDate, 'month') < 9))
+                            ((patient.death && deathDate.diff(treatmentStartDate, 'month') < 9) ||
+                            (patient.progression && progressionDate.diff(treatmentStartDate, 'month') < 9))
                         ) {
                             console.log('ppp4')
-                            c.payable += patient.product.price * contract.ppp4
-                            c.refundable += patient.product.price * (1 - contract.ppp4)
+                            c.payable += patient.product.price * (1 - contract.ppp4)
+                            c.refundable += patient.product.price * contract.ppp4
                         }
                         else if (
-                            treatmentStartDate.diff(deathDate, 'month') < 12
+                            deathDate.diff(treatmentStartDate, 'month') < 12
                         ) {
                             console.log('ppp2')
-                            c.payable += patient.product.price * contract.ppp2
-                            c.refundable += patient.product.price * (1 - contract.ppp2)
+                            c.payable += patient.product.price * (1 - contract.ppp2)
+                            c.refundable += patient.product.price * contract.ppp2
                         }
-                        else if (treatmentStartDate.diff(progressionDate) > 9 && treatmentStartDate.diff(progressionDate) < 12) {
+                        else if (progressionDate.diff(treatmentStartDate) > 9 && progressionDate.diff(treatmentStartDate) < 12) {
                             console.log('ppp1')
-                            c.payable += patient.product.price * contract.ppp1
-                            c.refundable += patient.product.price * (1 - contract.ppp1)
+                            c.payable += patient.product.price * (1 - contract.ppp1)
+                            c.refundable += patient.product.price * contract.ppp1
                         }
                         else {
                             console.log('else')
